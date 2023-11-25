@@ -11,7 +11,7 @@ export const SearchResults = (props: {
 
   useEffect(() => {
     // if an api call is ongoing or it is just initiated we want to preserve
-    // the prevResults
+    // the prevResults for a smoother experience of the popup
     if (props.isLoading || props.data === undefined) {
       return
     }
@@ -25,7 +25,9 @@ export const SearchResults = (props: {
 
   return (
     <div className="search-results-container">
-      {searchResults?.map((x) => <SearchResult key={x.text} suggestion={x} />)}
+      {searchResults?.map((result) => (
+        <SearchResult key={result.text} result={result} />
+      ))}
     </div>
   )
 }

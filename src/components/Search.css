@@ -1,7 +1,16 @@
 .search-container { 
   position: absolute;
-  top: 35px;
+  top: 5px;
   left: 5px;
   width: 300px;
   z-index: 1000;
+}
+ 
+@media only screen and (max-width: 500px) { 
+  .search-container { 
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 95%;
+  }
 }

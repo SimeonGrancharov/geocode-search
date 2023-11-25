@@ -8,23 +8,20 @@ type PropsT = {
   children: React.ReactNode
 }
 
+type AddressData = {
+  address: string
+  magicKey: string
+}
+
 export const LocationContextProvider = (props: PropsT) => {
-  const [address, setAddress] = useState<
-    { address: string; magicKey: string } | undefined
-  >(undefined)
+  const [address, setAddress] = useState<AddressData | undefined>(undefined)
   const [location, setLocation] = useState<LocationT | undefined>(undefined)
 
-  const fetchLocation = useCallback(
-    async (params: { address: string; magicKey: string }) => {
-      const location = await getGeocodedAddresss(
-        params.address,
-        params.magicKey
-      )
+  const fetchLocation = useCallback(async (params: AddressData) => {
+    const location = await getGeocodedAddresss(params.address, params.magicKey)
 
-      setLocation(location)
-    },
-    []
-  )
+    setLocation(location)
+  }, [])
 
   useEffect(() => {
     if (address !== undefined) {

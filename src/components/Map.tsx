@@ -1,11 +1,6 @@
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api'
-import { useEffect, useRef } from 'react'
+import { useMemo } from 'react'
 import { useSelectedLocation } from '../hooks/useSelectedLocation'
-
-const containerStyle = {
-  width: '100%',
-  height: '500px'
-}
 
 const center = {
   lat: 42.7339,
@@ -13,18 +8,26 @@ const center = {
 }
 
 export const Map = () => {
-  const selectedLocation = useSelectedLocation()
+  const containerStyle = {
+    width: '100%',
+    height: '100vh'
+  }
 
-  useEffect(() => {
-    if (!selectedLocation) {
-      return
-    }
-  }, [selectedLocation])
+  const selectedLocation = useSelectedLocation()
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: 'AIzaSyDP_WR7eGdU8lElMj3025SPZEyJEUWiqnU'
   })
+
+  const mapOptions = useMemo(
+    () => ({
+      fullscreenControl: false,
+      streetViewControl: false,
+      mapTypeControl: false
+    }),
+    []
+  )
 
   return isLoaded ? (
     <GoogleMap
@@ -40,9 +43,7 @@ export const Map = () => {
       zoom={8}
       onLoad={() => {}}
       onUnmount={() => {}}
-      options={{
-        fullscreenControl: false
-      }}
+      options={mapOptions}
     >
       {selectedLocation ? (
         <Marker
