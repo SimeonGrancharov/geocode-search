@@ -13,6 +13,7 @@ p {
 }
 
 .main-container { 
+  position: relative;
   width: 1350px;
   display: flex;
   align-items: center;
