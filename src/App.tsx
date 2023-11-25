@@ -1,6 +1,5 @@
 import './App.css'
 import { Search } from './components/Search'
-import { SearchContextProvider } from './components/SearchProvider'
 import { Map } from './components/Map'
 import { LocationContextProvider } from './components/LocationContextProvider'
 
@@ -9,9 +8,7 @@ function App() {
     <div className="root">
       <div className="main-container">
         <LocationContextProvider>
-          <SearchContextProvider>
-            <Search />
-          </SearchContextProvider>
+          <Search />
           <Map />
         </LocationContextProvider>
       </div>

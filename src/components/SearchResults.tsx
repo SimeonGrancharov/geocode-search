@@ -1,23 +1,23 @@
 import './SearchResults.css'
-import { useSearchResults } from '../hooks/useSearchResults'
 import { SearchResult } from './SearchResult'
-import { useIsSearching } from '../hooks/useIsSearching'
 import { useEffect, useState } from 'react'
+import { SuggestionT } from '../types/Suggestion'
 
-export const SearchResults = () => {
-  const _searchResults = useSearchResults()
-  const [searchResults, setSearchResults] = useState(_searchResults)
-  const isSearching = useIsSearching()
+export const SearchResults = (props: {
+  data: SuggestionT[] | undefined
+  isLoading: boolean
+}) => {
+  const [searchResults, setSearchResults] = useState(props.data)
 
   useEffect(() => {
     // if an api call is ongoing or it is just initiated we want to preserve
     // the prevResults
-    if (isSearching || _searchResults === undefined) {
+    if (props.isLoading || props.data === undefined) {
       return
     }
 
-    setSearchResults(_searchResults)
-  }, [isSearching, _searchResults, setSearchResults])
+    setSearchResults(props.data)
+  }, [props.isLoading, props.data, setSearchResults])
 
   if (!searchResults?.length) {
     return null
