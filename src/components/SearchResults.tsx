@@ -11,18 +11,27 @@ export const SearchResults = (props: {
   const [searchResults, setSearchResults] = useState(props.data)
 
   useEffect(() => {
-    // if an api call is ongoing or it is just initiated we want to preserve
-    // the prevResults for a smoother experience of the popup
-    if (props.isLoading || props.data === undefined) {
+    // The desired behavior is that the popup should remain visible with old
+    // results when new search is initiated
+    //
+    // If the component is visible and there is an ongoing api call or there is no
+    // data (which means there is no data at all, not just no results)
+    // we want to preserve the popup open to achieve the desired behavior.
+    //
+    if ((props.isLoading || props.data === undefined) && props.isShown) {
       return
     }
 
     setSearchResults(props.data)
-  }, [props.isLoading, props.data, setSearchResults])
+  }, [props.isLoading, props.data, setSearchResults, props.isShown])
 
-  return props.isShown ? (
+  if (!searchResults) {
+    return null
+  }
+
+  return (
     <div className="search-results-container">
-      {searchResults && searchResults.length ? (
+      {searchResults.length ? (
         searchResults.map((result) => (
           <SearchResult key={result.text} result={result} />
         ))
@@ -32,5 +41,5 @@ export const SearchResults = (props: {
         </div>
       )}
     </div>
-  ) : null
+  )
 }
