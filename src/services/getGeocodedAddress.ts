@@ -10,5 +10,5 @@ export async function getGeocodedAddresss(
     magicKey
   })
 
-  return data[0]
+  return data.candidates[0]
 }

@@ -15,7 +15,6 @@ export const SearchResults = () => {
     if (isSearching || _searchResults === undefined) {
       return
     }
-    console.log(' E kak > ', _searchResults)
 
     setSearchResults(_searchResults)
   }, [isSearching, _searchResults, setSearchResults])

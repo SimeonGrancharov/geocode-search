@@ -14,6 +14,23 @@ type SearchResultsState = {
   searchResults: Record<string, SuggestionT['text'][]>
 }
 
+const MapContext = () => {
+  // suggestedLocation = useState
+  // setSelectedSuggestion = (s)=> {
+  // fetchAddress(s)
+  //
+  // setSuggestedLocation(r)
+  // }
+  // value = {
+  // suggestionLocation: S
+  // setSelectedSuggestion: (s: S ) => void
+  // }
+  // return the provider
+}
+type MapContextT = {
+  setSelectedSuggestion: SuggestionT
+}
+
 export const SearchContextProvider = ({ children }: PropsT) => {
   const [isSearching, setIsSearching] = useState<boolean>(false)
   const [searchQuery, setSearchQuery] = useState<string>('')

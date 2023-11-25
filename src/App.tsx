@@ -1,15 +1,20 @@
 import './App.css'
 import { Search } from './components/Search'
 import { SearchContextProvider } from './components/SearchProvider'
+import { Map } from './components/Map'
+import { LocationContextProvider } from './components/LocationContextProvider'
 
 function App() {
   return (
     <div className="root">
-      <SearchContextProvider>
-        <div className="main-container">
-          <Search />
-        </div>
-      </SearchContextProvider>
+      <div className="main-container">
+        <LocationContextProvider>
+          <SearchContextProvider>
+            <Search />
+          </SearchContextProvider>
+          <Map />
+        </LocationContextProvider>
+      </div>
     </div>
   )
 }
