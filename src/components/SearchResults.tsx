@@ -5,6 +5,7 @@ import { SuggestionT } from '../types/Suggestion'
 
 export const SearchResults = (props: {
   data: SuggestionT[] | undefined
+  isShown: boolean
   isLoading: boolean
 }) => {
   const [searchResults, setSearchResults] = useState(props.data)
@@ -19,15 +20,17 @@ export const SearchResults = (props: {
     setSearchResults(props.data)
   }, [props.isLoading, props.data, setSearchResults])
 
-  if (!searchResults?.length) {
-    return null
-  }
-
-  return (
+  return props.isShown ? (
     <div className="search-results-container">
-      {searchResults?.map((result) => (
-        <SearchResult key={result.text} result={result} />
-      ))}
+      {searchResults && searchResults.length ? (
+        searchResults.map((result) => (
+          <SearchResult key={result.text} result={result} />
+        ))
+      ) : (
+        <div className="empty-results-container">
+          <p>Няма намерени резултати</p>
+        </div>
+      )}
     </div>
-  )
+  ) : null
 }

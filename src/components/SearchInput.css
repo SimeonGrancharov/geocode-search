@@ -1,9 +1,14 @@
+.search-input-container { 
+  position: relative;
+}
+
+
 .search-input { 
     box-sizing: border-box;
     border-radius: 8px;
     background-color: #EEEEEE;
     border: 0.5px solid #9E9E9E;
-    padding: 12px 8px;
+    padding: 12px 40px 12px 10px;
     width: 100%;
 
     font-size: 1.4rem;
@@ -14,3 +19,16 @@
   outline: none
 }
 
+.clear-search {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  right: 3.5%;
+}
+
+.clear-search:hover { 
+  cursor: pointer
+}

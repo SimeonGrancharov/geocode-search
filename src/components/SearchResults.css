@@ -12,3 +12,11 @@
     border: 0.5px solid #BDBDBD;
     border-radius:  8px;
 }
+
+.empty-results-container { 
+  padding: 15px;
+
+  font-size: 1.3rem;
+  line-height: 1.7rem;
+  font-weight: 500;
+}

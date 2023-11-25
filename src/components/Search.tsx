@@ -64,7 +64,7 @@ export const Search = () => {
     fetchSuggestions(searchQuery)
   }, [searchQuery, fetchSuggestions])
 
-  const searchResults = useMemo(
+  const searchResults = useMemo<SuggestionT[] | undefined>(
     () =>
       searchResultsCache[searchQuery]?.map((result) => resultsByText[result]),
     [searchResultsCache, searchQuery, resultsByText]
@@ -79,8 +79,12 @@ export const Search = () => {
 
   return (
     <div className="search-container">
-      <SearchInput onChange={setQuery} />
-      <SearchResults data={searchResults} isLoading={isSearching} />
+      <SearchInput onChange={setQuery} value={searchQuery} />
+      <SearchResults
+        data={searchResults}
+        isLoading={isSearching}
+        isShown={Boolean(searchQuery)}
+      />
     </div>
   )
 }
