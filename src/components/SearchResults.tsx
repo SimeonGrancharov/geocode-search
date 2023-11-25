@@ -1,9 +1,17 @@
+import './SearchResults.css'
 import { useSearchResults } from '../hooks/useSearchContext'
+import { SearchResult } from './SearchResult'
 
 export const SearchResults = () => {
   const searchResults = useSearchResults()
 
-  console.log({ searchResults })
+  if (!searchResults?.length) {
+    return null
+  }
 
-  return <>{searchResults?.map((x) => <p key={x.text}>{x.text}</p>)}</>
+  return (
+    <div className="search-results-container">
+      {searchResults?.map((x) => <SearchResult key={x.text} suggestion={x} />)}
+    </div>
+  )
 }

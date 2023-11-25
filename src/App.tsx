@@ -1,14 +1,14 @@
 import './App.css'
-import { SearchInput } from './components/SearchInput'
+import { Search } from './components/Search'
 import { SearchContextProvider } from './components/SearchProvider'
-import { SearchResults } from './components/SearchResults'
 
 function App() {
   return (
     <div className="root">
       <SearchContextProvider>
-        <SearchInput />
-        <SearchResults />
+        <div className="main-container">
+          <Search />
+        </div>
       </SearchContextProvider>
     </div>
   )

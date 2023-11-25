@@ -1,0 +1,11 @@
+.result-container { 
+   padding: 15px 10px 15px 10px ;
+}
+
+.result-container p { 
+  text-align: start;
+
+  font-size: 1.4rem;
+  line-height: 1.9rem;
+  font-weight: 400;
+}

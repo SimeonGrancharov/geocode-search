@@ -1,10 +1,7 @@
 import { produce } from 'immer'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { SearchContext } from '../context/Search'
-import {
-  useDebouncedCallback,
-  useThrottledCallback
-} from '../hooks/useThrottle'
+import { useDebouncedCallback } from '../hooks/useThrottle'
 import { getSuggestions } from '../services/getSuggestions'
 import { SuggestionT } from '../types/Suggestion'
 
@@ -18,6 +15,7 @@ type SearchResultsState = {
 }
 
 export const SearchContextProvider = ({ children }: PropsT) => {
+  const [isFetching, setIsFetching] = useState<boolean>(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
 
   const [resultsByText, setResultsByText] = useState<
@@ -34,7 +32,13 @@ export const SearchContextProvider = ({ children }: PropsT) => {
         return
       }
 
+      if (searchResultsCache[query] !== undefined) {
+        // cache hit no need to spam requests
+        return
+      }
+
       const suggestions = await getSuggestions(query)
+      console.log('Results for query >>> ', query, suggestions)
 
       setResultsByText((state) =>
         produce(state, (draftState) => {
@@ -52,7 +56,7 @@ export const SearchContextProvider = ({ children }: PropsT) => {
         )
       }
     },
-    { duration: 200 }
+    { duration: 50 }
   )
 
   useEffect(() => {
