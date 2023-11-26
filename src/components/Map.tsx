@@ -1,5 +1,5 @@
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api'
-import { useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelectedLocation } from '../hooks/useSelectedLocation'
 
 const center = {
@@ -8,12 +8,25 @@ const center = {
 }
 
 export const Map = () => {
+  const [map, setMap] = useState<google.maps.Map | undefined>()
   const containerStyle = {
     width: '100%',
     height: '100vh'
   }
 
   const selectedLocation = useSelectedLocation()
+
+  useEffect(() => {
+    if (selectedLocation !== undefined) {
+      map?.moveCamera({
+        center: {
+          lat: selectedLocation.location.y,
+          lng: selectedLocation.location.x
+        },
+        zoom: 14
+      })
+    }
+  }, [selectedLocation, map])
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -29,19 +42,16 @@ export const Map = () => {
     []
   )
 
+  const onLoad = useCallback((map: google.maps.Map) => {
+    setMap(map)
+  }, [])
+
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
-      center={
-        selectedLocation
-          ? {
-              lat: selectedLocation.location.y,
-              lng: selectedLocation.location.x
-            }
-          : center
-      }
+      center={center}
       zoom={8}
-      onLoad={() => {}}
+      onLoad={onLoad}
       onUnmount={() => {}}
       options={mapOptions}
     >
