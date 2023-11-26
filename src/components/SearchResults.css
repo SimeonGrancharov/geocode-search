@@ -20,3 +20,29 @@
   line-height: 1.7rem;
   font-weight: 500;
 }
+
+.search-results-container.invisible { 
+  display: none
+}
+
+.search-results-gradient { 
+  height: 40px;
+  position: absolute;
+  left: 0;
+  right: 0
+}
+
+
+.search-results-gradient.top { 
+  background: linear-gradient(180deg, rgba(233,233,233,1) 0%, rgba(255,255,255,0) 85%);
+  top: 49px;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+
+.search-results-gradient.bottom { 
+  bottom: 0px;
+  background: linear-gradient(0deg, rgba(233, 233, 233,1) 0%, rgba(255,255,255,0) 85%);
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+}

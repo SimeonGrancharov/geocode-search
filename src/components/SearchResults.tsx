@@ -1,6 +1,6 @@
 import './SearchResults.css'
 import { SearchResult } from './SearchResult'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { SuggestionT } from '../types/Suggestion'
 
 export const SearchResults = (props: {
@@ -8,7 +8,46 @@ export const SearchResults = (props: {
   isShown: boolean
   isLoading: boolean
 }) => {
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const [shouldShowTopGradient, setShouldShowTopGradient] =
+    useState<boolean>(false)
+  const [shouldShowBottomGradient, setShouldShowBottomGradient] =
+    useState<boolean>(false)
   const [searchResults, setSearchResults] = useState(props.data)
+
+  const decideAndSetGradients = useCallback(() => {
+    if (!containerRef.current) {
+      return
+    }
+
+    setShouldShowBottomGradient(
+      containerRef.current.scrollTop + containerRef.current.offsetHeight <
+        containerRef.current.scrollHeight
+    )
+
+    setShouldShowTopGradient(containerRef.current.scrollTop > 0)
+  }, [])
+
+  useEffect(() => {
+    if (!containerRef.current) {
+      return
+    }
+
+    const resizeObserver = new ResizeObserver(() => {
+      decideAndSetGradients()
+    })
+
+    resizeObserver.observe(containerRef.current)
+
+    containerRef.current?.addEventListener('scroll', () => {
+      decideAndSetGradients()
+    })
+
+    return () => {
+      resizeObserver.disconnect()
+      containerRef.current?.removeEventListener('scroll', () => {})
+    }
+  }, [decideAndSetGradients])
 
   useEffect(() => {
     // The desired behavior is that the popup should remain visible with old
@@ -25,21 +64,30 @@ export const SearchResults = (props: {
     setSearchResults(props.data)
   }, [props.isLoading, props.data, setSearchResults, props.isShown])
 
-  if (!searchResults) {
-    return null
-  }
-
   return (
-    <div className="search-results-container">
-      {searchResults.length ? (
-        searchResults.map((result) => (
-          <SearchResult key={result.text} result={result} />
-        ))
-      ) : (
-        <div className="empty-results-container">
-          <p>Няма намерени резултати</p>
-        </div>
-      )}
+    <div
+      ref={(r) => (containerRef.current = r)}
+      className={`search-results-container ${
+        !searchResults ? 'invisible' : ''
+      }`}
+    >
+      {shouldShowTopGradient ? (
+        <div className="search-results-gradient top" />
+      ) : null}
+      {searchResults !== undefined ? (
+        searchResults.length ? (
+          searchResults.map((result) => (
+            <SearchResult key={result.text} result={result} />
+          ))
+        ) : (
+          <div className="empty-results-container">
+            <p>Няма намерени резултати</p>
+          </div>
+        )
+      ) : null}
+      {shouldShowBottomGradient ? (
+        <div className="search-results-gradient bottom" />
+      ) : null}
     </div>
   )
 }
