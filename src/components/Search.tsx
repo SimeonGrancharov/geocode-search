@@ -6,7 +6,6 @@ import './Search.css'
 import { SearchInput } from './SearchInput'
 import { SearchResults } from './SearchResults'
 import { getSuggestions } from '../services/getSuggestions'
-import { useSelectAddress } from '../hooks/useSelectAddress'
 import { useWindowDimensions } from '../hooks/useWindowDimensions'
 
 type SearchResultsState = {
