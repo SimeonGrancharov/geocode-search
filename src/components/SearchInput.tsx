@@ -4,6 +4,7 @@ import './SearchInput.css'
 export const SearchInput = (props: {
   onChange: (value: string) => void
   value: string
+  onFocus: () => void
 }) => {
   return (
     <div className="search-input-container">
@@ -15,6 +16,7 @@ export const SearchInput = (props: {
         onChange={(ev) => {
           props.onChange(ev.target.value)
         }}
+        onFocus={props.onFocus}
       />
       <div
         onClick={() => {

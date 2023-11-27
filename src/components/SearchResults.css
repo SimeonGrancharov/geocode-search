@@ -26,6 +26,7 @@
 }
 
 .search-results-gradient { 
+  pointer-events: none;
   height: 40px;
   position: absolute;
   left: 0;

@@ -7,6 +7,7 @@ export const SearchResults = (props: {
   data: SuggestionT[] | undefined
   isShown: boolean
   isLoading: boolean
+  onResultClick: (res: SuggestionT) => void
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [shouldShowTopGradient, setShouldShowTopGradient] =
@@ -74,7 +75,9 @@ export const SearchResults = (props: {
     <div
       ref={(r) => (containerRef.current = r)}
       className={`search-results-container ${
-        !searchResults ? 'invisible' : ''
+        // Since the fact that we use ref to the container it is better approach to
+        // hide the container with css rather than unmounting the div
+        !searchResults || !props.isShown ? 'invisible' : ''
       }`}
     >
       {shouldShowTopGradient ? (
@@ -83,7 +86,11 @@ export const SearchResults = (props: {
       {searchResults !== undefined ? (
         searchResults.length ? (
           searchResults.map((result) => (
-            <SearchResult key={result.text} result={result} />
+            <SearchResult
+              key={result.text}
+              result={result}
+              onClick={props.onResultClick}
+            />
           ))
         ) : (
           <div className="empty-results-container">

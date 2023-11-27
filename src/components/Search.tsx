@@ -6,6 +6,8 @@ import './Search.css'
 import { SearchInput } from './SearchInput'
 import { SearchResults } from './SearchResults'
 import { getSuggestions } from '../services/getSuggestions'
+import { useSelectAddress } from '../hooks/useSelectAddress'
+import { useWindowDimensions } from '../hooks/useWindowDimensions'
 
 type SearchResultsState = {
   results: Record<SuggestionT['text'], SuggestionT>
@@ -13,8 +15,11 @@ type SearchResultsState = {
 }
 
 export const Search = () => {
+  const [shouldHideResults, setShouldHideResults] = useState<boolean>(false)
   const [isSearching, setIsSearching] = useState<boolean>(false)
   const [searchQuery, setSearchQuery] = useState<string>('')
+
+  const windowDimensions = useWindowDimensions()
 
   const [resultsByText, setResultsByText] = useState<
     SearchResultsState['results']
@@ -64,6 +69,13 @@ export const Search = () => {
     fetchSuggestions(searchQuery)
   }, [searchQuery, fetchSuggestions])
 
+  useEffect(() => {
+    // We want results to always be shown on resolution > 500px width
+    if (windowDimensions.width > 500 && shouldHideResults) {
+      setShouldHideResults(false)
+    }
+  }, [windowDimensions.width, shouldHideResults])
+
   const searchResults = useMemo<SuggestionT[] | undefined>(
     () =>
       searchResultsCache[searchQuery]?.map((result) => resultsByText[result]),
@@ -77,13 +89,30 @@ export const Search = () => {
     [setSearchQuery]
   )
 
+  const onResultClick = useCallback(() => {
+    if (window.innerWidth <= 500) {
+      setShouldHideResults(true)
+    }
+  }, [])
+
+  const onInputFocused = useCallback(() => {
+    if (window.innerWidth <= 500) {
+      setShouldHideResults(false)
+    }
+  }, [])
+
   return (
     <div className="search-container">
-      <SearchInput onChange={setQuery} value={searchQuery} />
+      <SearchInput
+        onChange={setQuery}
+        value={searchQuery}
+        onFocus={onInputFocused}
+      />
       <SearchResults
         data={searchResults}
         isLoading={isSearching}
-        isShown={Boolean(searchQuery)}
+        isShown={!shouldHideResults && Boolean(searchQuery)}
+        onResultClick={onResultClick}
       />
     </div>
   )
