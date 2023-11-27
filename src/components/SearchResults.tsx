@@ -50,6 +50,12 @@ export const SearchResults = (props: {
   }, [decideAndSetGradients])
 
   useEffect(() => {
+    if ((containerRef.current?.scrollTop ?? 0) > 0) {
+      containerRef.current?.scrollTo({ top: 0 })
+    }
+  }, [searchResults])
+
+  useEffect(() => {
     // The desired behavior is that the popup should remain visible with old
     // results when new search is initiated
     //
