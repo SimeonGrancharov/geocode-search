@@ -30,7 +30,7 @@ export const Map = () => {
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyDP_WR7eGdU8lElMj3025SPZEyJEUWiqnU'
+    googleMapsApiKey: 'whothis?'
   })
 
   const mapOptions = useMemo(
